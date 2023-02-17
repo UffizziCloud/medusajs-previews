@@ -2,9 +2,12 @@
   <a href="https://www.medusa-commerce.com">
     <img alt="Medusa" src="https://i.imgur.com/USubGVY.png" width="100" />
   </a>
+  <a href="https://uffizzi.com">
+    <img alt="Medusa" src="https://assets.website-files.com/636dbee261df29d4438db278/637680bb6cfab675d6c91e52_header-logo-black.svg" width="100" />
+  </a>
 </p>
 <h1 align="center">
-  Medusa Starter Default
+  Medusa Uffizzi Previews
 </h1>
 <p align="center">
 This repo provides the skeleton to get you started with using <a href="https://github.com/medusajs/medusa">Medusa</a>. Follow the steps below to get ready.
