@@ -36,7 +36,7 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           context: ./
-          file: .github/uffizzi/Dockerfile
+          file: Dockerfile
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           push: true
@@ -74,8 +74,7 @@ jobs:
       - name: Build Image
         uses: docker/build-push-action@v3
         with:
-          context: ./
-          file: .github/uffizzi/Dockerfile
+          context: ./frontend
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           push: true
