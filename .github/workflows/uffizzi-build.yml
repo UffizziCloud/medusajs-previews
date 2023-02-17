@@ -75,12 +75,12 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           context: ./frontend
+          file: ./frontend/Dockerfile
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           push: true
           cache-from: type=gha
           cache-to: type=gha,mode=max
-
 
   render-compose-file:
     name: Render Docker Compose File
@@ -97,10 +97,10 @@ jobs:
         run: |
           MEDUSA_IMAGE=$(echo ${{ needs.build-medusa.outputs.tags }})
           export MEDUSA_IMAGE
-          STOREFRONT_IMAGE=$(echo ${{ needs.build-medusa.outputs.tags }})
-          export STOREFRONT_IMAGE
+          # STOREFRONT_IMAGE=$(echo ${{ needs.build-medusa.outputs.tags }})
+          # export STOREFRONT_IMAGE
           # Render simple template from environment variables.
-          envsubst < .github/uffizzi/docker-compose.uffizzi.yml > docker-compose.rendered.yml
+          envsubst < docker-compose.uffizzi.yml > docker-compose.rendered.yml
           cat docker-compose.rendered.yml
       - name: Upload Rendered Compose File as Artifact
         uses: actions/upload-artifact@v3

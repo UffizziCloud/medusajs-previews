@@ -1,27 +1,33 @@
 version: "3"
+
+x-uffizzi:
+  ingress:
+    service: backend
+    port: 9000
+
 services:
   backend:
     image: ${MEDUSA_IMAGE}
     environment:
-      DATABASE_URL: postgres://postgres:postgres@postgres:5432/medusa-docker
-      REDIS_URL: redis://redis
+      DATABASE_URL: postgres://postgres:postgres@0.0.0.0:5432/medusa-docker
+      REDIS_URL: redis://0.0.0.0
       NODE_ENV: development
       JWT_SECRET: something
       COOKIE_SECRET: something
       PORT: 9000
     ports:
       - "9000:9000"
-    volumes:
-      - .:/app/medusa
-      - node_modules:/app/medusa/node_modules
+    # volumes:
+    #   - .:/app/medusa
+    #   - node_modules:/app/medusa/node_modules
 
-  frontend:
-    image: ${STOREFRONT_IMAGE}
-    container_name: frontend
-    ports:
-      - "8000:8000"
+  # frontend:
+  #   image: ${STOREFRONT_IMAGE}
+  #   container_name: frontend
+  #   ports:
+  #     - "8000:8000"
 
-  postgres:
+  postgres: 
     image: postgres:10.4
     ports:
       - "5432:5432"
