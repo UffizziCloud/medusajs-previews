@@ -15,17 +15,24 @@ services:
       JWT_SECRET: something
       COOKIE_SECRET: something
       PORT: 9000
-    ports:
+    ports: 
       - "9000:9000"
-    # volumes:
-    #   - .:/app/medusa
-    #   - node_modules:/app/medusa/node_modules
+    deploy:
+      resources:
+        limits:
+          memory: 4000M
 
-  # frontend:
-  #   image: ${STOREFRONT_IMAGE}
-  #   container_name: frontend
-  #   ports:
-  #     - "8000:8000"
+  frontend:
+    image: ${STOREFRONT_IMAGE}
+    container_name: frontend
+    ports:
+      - "8000:8000"
+    deploy:
+      resources:
+        limits:
+          memory: 2000M
+    entrypoint: /bin/sh
+    command: ["-c", "apk add wait4ports && wait4ports tcp://0.0.0.0:5432 && yarn start"]
 
   postgres: 
     image: postgres:10.4
@@ -35,6 +42,10 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: medusa-docker
+    deploy:
+      resources:
+        limits:
+          memory: 1000M
 
   redis:
     image: redis

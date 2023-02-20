@@ -97,8 +97,8 @@ jobs:
         run: |
           MEDUSA_IMAGE=$(echo ${{ needs.build-medusa.outputs.tags }})
           export MEDUSA_IMAGE
-          # STOREFRONT_IMAGE=$(echo ${{ needs.build-medusa.outputs.tags }})
-          # export STOREFRONT_IMAGE
+          STOREFRONT_IMAGE=$(echo ${{ needs.build-storefront.outputs.tags }})
+          export STOREFRONT_IMAGE
           # Render simple template from environment variables.
           envsubst < docker-compose.uffizzi.yml > docker-compose.rendered.yml
           cat docker-compose.rendered.yml
