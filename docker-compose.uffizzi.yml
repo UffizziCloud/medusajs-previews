@@ -2,10 +2,11 @@ version: "3"
 
 x-uffizzi:
   ingress:
-    service: backend
-    port: 9000
+    service: frontend
+    port: 8000
 
 services:
+  
   backend:
     image: ${MEDUSA_IMAGE}
     environment:
@@ -26,14 +27,14 @@ services:
     image: ${STOREFRONT_IMAGE}
     container_name: frontend
     ports:
-      - "8000:8000"
+    - "8000:8000"
+    entrypoint: /bin/sh
+    command: ["-c", "apk add wait4ports && wait4ports tcp://0.0.0.0:5432 && yarn start"]
     deploy:
       resources:
         limits:
           memory: 2000M
-    entrypoint: /bin/sh
-    command: ["-c", "apk add wait4ports && wait4ports tcp://0.0.0.0:5432 && yarn start"]
-
+    
   postgres: 
     image: postgres:10.4
     ports:
