@@ -1,0 +1,19 @@
+{
+  "/_app": "pages/_app.js",
+  "/_document": "pages/_document.js",
+  "/404": "pages/404.html",
+  "/account/addresses": "pages/account/addresses.html",
+  "/account": "pages/account.html",
+  "/account/login": "pages/account/login.html",
+  "/account/orders": "pages/account/orders.html",
+  "/account/profile": "pages/account/profile.html",
+  "/cart": "pages/cart.html",
+  "/checkout": "pages/checkout.html",
+  "/": "pages/index.html",
+  "/store": "pages/store.html",
+  "/_error": "pages/_error.js",
+  "/collections/[id]": "pages/collections/[id].js",
+  "/order/details/[id]": "pages/order/details/[id].js",
+  "/products/[handle]": "pages/products/[handle].js",
+  "/order/confirmed/[id]": "pages/order/confirmed/[id].js"
+}

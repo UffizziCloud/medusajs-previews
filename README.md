@@ -1,4 +1,4 @@
-<p align="center">
+<p align="center"> 
   <a href="https://www.medusa-commerce.com">
     <img alt="Medusa" src="https://i.imgur.com/USubGVY.png" width="100" />
   </a>
