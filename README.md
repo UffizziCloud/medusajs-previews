@@ -1,4 +1,4 @@
-<p align="center">
+<p align="center"> 
   <a href="https://www.medusa-commerce.com">
     <img alt="Medusa" src="https://i.imgur.com/USubGVY.png" width="100" />
   </a>
@@ -10,131 +10,66 @@
   Medusa Uffizzi Previews
 </h1>
 <p align="center">
-This repo provides the skeleton to get you started with using <a href="https://github.com/medusajs/medusa">Medusa</a> with <a href="https://github.com/UffizziCloud/uffizzi">Uffizzi</a>. Follow the steps below to get ready.
+This repo provides the skeleton to get you started with using <a href="https://github.com/UffizziCloud/uffizzi">Uffizzi</a> to create ephemeral environments for <a href="https://github.com/medusajs/medusa">Medusa</a>. To better understand the whole system check out our blog on Medusa applications here. Follow the steps below to try out the previews for Medusa and better understand how the previews are build.
 </p>
 
+## Ephemeral environment builds for MedusaJS applications
 
-## Prerequisites
+### Application architecture 
 
-This starter has minimal prerequisites and most of these will usually already be installed on your computer.
+The following is the architecutre of the Medusa application we will be building and previewing in Uffizzi in this repo. 
 
-- [Install Node.js](https://nodejs.org/en/download/)
-- [Install git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
-- [Install SQLite](https://www.sqlite.org/download.html)
 
-## Setting up your store
+![alt text](public/architecture.png?raw=true "NextJS + MedusaJS Application")
 
-- Install the Medusa CLI
-  ```
-  npm install -g @medusajs/medusa
-  yarn global add @medusajs/medusa
-  ```
-- Create a new Medusa project
-  ```
-  medusa new my-medusa-store
-  ```
-- Run your project
-  ```
-  cd my-medusa-store
-  medusa develop
-  ```
 
-Your local Medusa server is now running on port **9000**.
+The above is the architecture of the medusajs + nextjs application where medusajs is the backend and nextjs is the frontend. Considering we can have only one final ingress for the ephemeral environments as of now; we are going to set frontend as the ingress service. Frontend uses the backend which uses the other database and cache services so it will help us get a better idea if the application is working well or not.
 
-### Seeding your Medusa store
 
----
+Let's look at what the Uffizzi configuration looks like and what configuration we need to add to make the above possible. 
 
-To seed your medusa store run the following command:
 
-```
-medusa seed -f ./data/seed.json
+### The Uffizzi configuration
+
+The `docker-compose.uffizzi.yml` in the root of the repo is the main configuration file for Uffizzi. It is an everyday docker-compose file with the following changes made to it :-
+
+1. The `x-uffizzi` configuration. 
+
+```yaml
+x-uffizzi:
+  ingress:
+    service: frontend
+    port: 8000
 ```
 
-This command seeds your database with some sample data to get you started, including a store, an administrator account, a region and a product with variants. What the data looks like precisely you can see in the `./data/seed.json` file.
+The above configuration let's the Uffizzi engine know that this docker-compose file has been configured for Uffizzi. Here we define the ingress which points to the frontend of the application. The final Uffizzi URL for the ephemeral environment is created routes requests directly to the frontend service in this case.
 
-## Setting up your store with Docker
+2. Values for the `image` parameter for the services which need to be built on every change.
 
-- Install the Medusa CLI
-  ```
-  npm install -g @medusajs/medusa-cli
-  ```
-- Create a new Medusa project
-  ```
-  medusa new my-medusa-store
-  ```
-- Update project config in `medusa-config.js`:
+The values for these are are updated to use ${MEDUSA_IMAGE} and the ${STOREFRONT_IMAGE} placeholders instead of local build contexts so that we can replace these placeholders with the image tags from the github action builds.
 
-  ```
-  module.exports = {
-    projectConfig: {
-      redis_url: REDIS_URL,
-      database_url: DATABASE_URL, //postgres connectionstring
-      database_type: "postgres",
-      store_cors: STORE_CORS,
-      admin_cors: ADMIN_CORS,
-    },
-    plugins,
-  };
-  ```
+Considering that the frontend has been configured to consume the backend service, let's see how the medusajs backend consumes the postgres and the redis services.
 
-- Run your project
+###  The MedusaJS configuration
 
-  When running your project the first time `docker compose` should be run with the `build` flag to build your container locally:
+The medusa.config.js projectConfig object below gives a better idea of how the medusa backend connects to other services : 
 
-  ```
-  docker-compose up --build
-  ```
-
-  When running your project subsequent times you can run docker compose with no flags to spin up your local environment in seconds:
-
-  ```
-  docker-compose up
-  ```
-
-Your local Medusa server is now running on port **9000**.
-
-### Seeding your Medusa store with Docker
-
----
-
-To add seed data to your medusa store running with Docker, run this command in a seperate terminal:
-
-```
-docker exec medusa-server medusa seed -f ./data/seed.json
+```js
+module.exports = {
+ projectConfig: {
+   redis_url: REDIS_URL,
+   database_url: DATABASE_URL,
+   database_type: "postgres"
+ },
+ plugins,
+};
 ```
 
-This will execute the previously described seed script in the running `medusa-server` Docker container.
+In the above configuration the values for REDIS_URL and DATABASE_URL are pointing to the sockets exposed by the redis and postgres services. Check out https://docs.medusajs.com/ for any other configuration you would like to add.
 
-## Try it out
+## Next steps
 
-```
-curl -X GET localhost:9000/store/products | python -m json.tool
-```
+To learn more above creating epehemral environments for MedusaJS applications, check out our blog here and if you have any issues setting up Uffizzi or configuring MedusaJS, follow the links below.
 
-After the seed script has run you will have the following things in you database:
-
-- a User with the email: admin@medusa-test.com and password: supersecret
-- a Region called Default Region with the countries GB, DE, DK, SE, FR, ES, IT
-- a Shipping Option called Standard Shipping which costs 10 EUR
-- a Product called Cool Test Product with 4 Product Variants that all cost 19.50 EUR
-
+Visit [docs.uffizzi.com](https://docs.uffizzi.com) for more information on epehemeral environments.
 Visit [docs.medusa-commerce.com](https://docs.medusa-commerce.com) for further guides.
-
-<p>
-  <a href="https://www.medusa-commerce.com">
-    Website
-  </a> 
-  |
-  <a href="https://medusajs.notion.site/medusajs/Medusa-Home-3485f8605d834a07949b17d1a9f7eafd">
-    Notion Home
-  </a>
-  |
-  <a href="https://twitter.com/intent/follow?screen_name=medusajs">
-    Twitter
-  </a>
-  |
-  <a href="https://docs.medusa-commerce.com">
-    Docs
-  </a>
-</p>
