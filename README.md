@@ -13,6 +13,14 @@
 This repo provides the skeleton to get you started with using <a href="https://github.com/UffizziCloud/uffizzi">Uffizzi</a> to create ephemeral environments for <a href="https://github.com/medusajs/medusa">Medusa</a>. To better understand the whole system check out our blog on Medusa applications here. Follow the steps below to try out the previews for Medusa and better understand how the previews are build.
 </p>
 
+## Try out Uffizzi
+
+1. Fork the repo
+2. Create a small change anywhere in the repo
+3. Create a pull requests with the change commit to trigger the Github action workflows to see Uffizzi in action !
+
+The following section provides information on how the ephemeral environments work.
+
 ## Ephemeral environment builds for MedusaJS applications
 
 ### Application architecture 
