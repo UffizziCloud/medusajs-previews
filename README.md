@@ -7,7 +7,7 @@
   </a>
 </p>
 <h1 align="center">
-  Medusa Uffizzi Previews
+ Uffizzi Ephemeral Environments for MedusaJS
 </h1>
 <p align="center">
 This repo provides the skeleton to get you started with using <a href="https://github.com/UffizziCloud/uffizzi">Uffizzi</a> to create ephemeral environments for <a href="https://github.com/medusajs/medusa">Medusa</a>. To better understand the whole system check out our blog on Medusa applications here. Follow the steps below to try out the previews for Medusa and better understand how the previews are build.
