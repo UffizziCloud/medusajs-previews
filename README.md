@@ -17,7 +17,7 @@ This repo provides the skeleton to get you started with using <a href="https://g
 
 1. Fork the repo
 2. Create a small change anywhere in the repo
-3. Create a pull requests with the change commit to trigger the Github action workflows to see Uffizzi in action !
+3. Create a pull requests with the change commit against the `uffizzi` branch to trigger the Github action workflows to see Uffizzi in action !
 
 The following section provides information on how the ephemeral environments work.
 
